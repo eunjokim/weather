@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 import matplotlib.pyplot as plt
 
 # 데이터 로드 및 전처리
@@ -12,8 +11,7 @@ def load_data():
     if '강수량' in data.columns:
         data['강수량'] = data['강수량'].fillna(0)
     return data
-    
-data = pd.read_csv(file_path, encoding='euc-kr')
+
 data = load_data()
 
 # Streamlit 애플리케이션
@@ -36,9 +34,10 @@ if '월' in data.columns and '일' in data.columns:
     st.subheader(f"{selected_month} 날짜별 강수량 분포")
     if not filtered_data.empty:
         fig, ax = plt.subplots()
-        filtered_data.boxplot(column='강수량', by='일', ax=ax, grid=False)
+        # X축: 날짜, Y축: 강수량
+        filtered_data.groupby('일')['강수량'].apply(list).plot.box(ax=ax)
         ax.set_title(f"{selected_month} 날짜별 강수량")
-        ax.set_xlabel("일")
+        ax.set_xlabel("날짜")
         ax.set_ylabel("강수량")
         st.pyplot(fig)
     else:
