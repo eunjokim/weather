@@ -1,11 +1,6 @@
 import streamlit as st
 import pandas as pd
-import koreanize_matplotlib
 import plotly.express as px
-import matplotlib.pyplot as plt
-
-import streamlit as st
-import pandas as pd
 import matplotlib.pyplot as plt
 
 # 데이터 파일 경로
