@@ -22,23 +22,23 @@ def main():
             
             # 월 선택
             st.subheader("월별 강수량 분포")
-            months = {i: calendar.month_name[i] for i in range(1, 13)}
-            month_name = st.selectbox("월을 선택하세요:", list(months.values()))
+            month_names = list(calendar.month_name[1:])  # 1월부터 12월까지의 영문 이름 리스트
+            selected_month = st.selectbox("월을 선택하세요:", month_names)
             
-            # 선택한 월 데이터 필터링
-            month_num = [k for k, v in months.items() if v == month_name][0]
+            # 선택한 월 데이터를 필터링
+            month_num = month_names.index(selected_month) + 1  # 월 이름을 숫자로 변환
             filtered_data = data[data['월'] == month_num]
             
             if not filtered_data.empty:
-                st.write(f"선택한 월: {month_name}")
+                st.write(f"선택한 월: {selected_month}")
                 
                 # 박스플롯 생성
                 fig, ax = plt.subplots()
                 filtered_data.boxplot(column='강수량', by='일', ax=ax)
-                ax.set_title(f"{month_name}의 날짜별 강수량 분포")
+                ax.set_title(f"{selected_month}의 날짜별 강수량 분포")
                 ax.set_xlabel("날짜")
                 ax.set_ylabel("강수량")
-                plt.suptitle("")  # Remove default subplot title
+                plt.suptitle("")  # 기본 제목 제거
                 st.pyplot(fig)
             else:
                 st.warning("선택한 월에 데이터가 없습니다.")
