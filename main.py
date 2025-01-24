@@ -33,8 +33,8 @@ def main():
                 st.write(f"선택한 월: {selected_month}")
                 
                 # 박스플롯 생성
-                fig, ax = plt.subplots()
-                filtered_data.boxplot(column='강수량', by='일', ax=ax)
+                fig, ax = plt.subplots(figsize=(10, 6))
+                filtered_data.boxplot(column='강수량', by='일', ax=ax, vert=True)
                 ax.set_title(f"{selected_month}의 날짜별 강수량 분포")
                 ax.set_xlabel("날짜")
                 ax.set_ylabel("강수량")
