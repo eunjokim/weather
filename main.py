@@ -13,7 +13,7 @@ def load_data():
 
 # Streamlit app
 def main():
-    st.title("By Month")
+    st.title("Daily Rainfall Analysis")
 
     # Load data
     data = load_data()
@@ -26,11 +26,13 @@ def main():
     }
 
     # Filter by month and show daily rainfall as bar chart
-    month = st.selectbox("Select a month", sorted(data['월'].unique()), format_func=lambda x: month_names[x])
-    monthly_data = data[data['월'] == month]
+    st.subheader("By Month")
+    month = st.selectbox("Select a month", [month_names[m] for m in sorted(data['월'].unique())])
+    selected_month = list(month_names.keys())[list(month_names.values()).index(month)]
+    monthly_data = data[data['월'] == selected_month]
 
     if monthly_data.empty:
-        st.warning(f"No data available for {month_names[month]}.")
+        st.warning(f"No data available for {month}.")
     else:
         fig, ax = plt.subplots()
         ax.bar(monthly_data['일'], monthly_data['강수량'], color='skyblue', edgecolor='black')
@@ -38,7 +40,6 @@ def main():
         ax.set_xticklabels(monthly_data['일'], rotation=45)  # Rotate for better readability
         ax.set_xlabel('Day of Month')
         ax.set_ylabel('Rainfall (mm)')
-        ax.set_title(f'Daily Rainfall in {month_names[month]}')
         st.pyplot(fig)
 
 if __name__ == "__main__":
