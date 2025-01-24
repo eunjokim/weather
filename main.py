@@ -13,7 +13,7 @@ def load_data():
 
 # Streamlit app
 def main():
-    st.title("Daily Rainfall Analysis")
+    st.title("By Month")
 
     # Load data
     data = load_data()
@@ -26,7 +26,6 @@ def main():
     }
 
     # Filter by month and show daily rainfall as bar chart
-    st.subheader("Monthly Rainfall Distribution")
     month = st.selectbox("Select a month", sorted(data['월'].unique()), format_func=lambda x: month_names[x])
     monthly_data = data[data['월'] == month]
 
