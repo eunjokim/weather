@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 # Load the dataset
 def load_data():
-    file_path = 'daily_temp.csv'
+    file_path = '강수량.csv'
     data = pd.read_csv(file_path, encoding='euc-kr')
     data['날짜'] = pd.to_datetime(data['날짜'])  # Convert date column to datetime
     data['월'] = data['날짜'].dt.month  # Extract month from date
