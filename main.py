@@ -35,6 +35,8 @@ def main():
     else:
         fig, ax = plt.subplots()
         ax.bar(monthly_data['일'], monthly_data['강수량'], color='skyblue', edgecolor='black')
+        ax.set_xticks(range(1, 32))  # Ensure all days from 1 to 31 are shown
+        ax.set_xticklabels(range(1, 32))
         ax.set_xlabel('Day of Month')
         ax.set_ylabel('Rainfall (mm)')
         ax.set_title(f'Daily Rainfall in {month_names[month]}')
@@ -42,4 +44,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
