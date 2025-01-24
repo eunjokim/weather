@@ -12,7 +12,6 @@ month_names = {
     9: 'September', 10: 'October', 11: 'November', 12: 'December'
 }
 
-# Streamlit 앱
 def main():
     st.title("강수량 데이터 분석")
 
@@ -43,18 +42,20 @@ def main():
                 # 박스플롯 생성
                 fig, ax = plt.subplots(figsize=(12, 6))
 
-                # 날짜별 강수량 데이터 재구조화
+                # 날짜별 강수량 데이터를 재구조화
                 boxplot_data = [
                     filtered_data[filtered_data['일'] == day]['강수량'].values
                     for day in range(1, 32)  # 1일부터 31일까지
                 ]
+                # 박스플롯 그리기
                 ax.boxplot(boxplot_data, positions=range(1, 32), widths=0.6)
                 ax.set_title(f"{selected_month_name}의 날짜별 강수량 분포")
                 ax.set_xlabel("날짜")
                 ax.set_ylabel("강수량")
-                ax.set_xticks(range(1, 32))
-                ax.set_xticklabels(range(1, 32))  # x축에 1~31일까지 표시
-                ax.tick_params(axis='x', rotation=45)  # x축 날짜 회전
+                ax.set_xticks(range(1, 32))  # 1부터 31까지 x축 설정
+                ax.set_xticklabels(range(1, 32))  # x축 레이블 추가
+                ax.tick_params(axis='x', rotation=45)  # x축 레이블 45도 회전
+                
                 st.pyplot(fig)
             else:
                 st.warning("선택한 월에 데이터가 없습니다.")
