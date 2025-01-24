@@ -13,7 +13,7 @@ def load_data():
 
 # Streamlit app
 def main():
-    st.title("Daily Rainfall Analysis")
+    st.title("By Month")
 
     # Load data
     data = load_data()
@@ -25,7 +25,7 @@ def main():
         9: 'September', 10: 'October', 11: 'November', 12: 'December'
     }
 
-    # Filter by month and show daily rainfall as bar chart
+    # Filter by month and show daily rainfall as boxplot
     st.subheader("By Month")
     month = st.selectbox("Select a month", [month_names[m] for m in sorted(data['월'].unique())])
     selected_month = list(month_names.keys())[list(month_names.values()).index(month)]
@@ -35,12 +35,17 @@ def main():
         st.warning(f"No data available for {month}.")
     else:
         fig, ax = plt.subplots()
-        ax.bar(monthly_data['일'], monthly_data['강수량'], color='skyblue', edgecolor='black')
-        ax.set_xticks(monthly_data['일'])  # Set x-ticks to actual days in the data
-        ax.set_xticklabels(monthly_data['일'], rotation=45)  # Rotate for better readability
+        ax.boxplot(
+            [monthly_data[monthly_data['일'] == day]['강수량'].dropna() for day in monthly_data['일'].unique()],
+            labels=monthly_data['일'].unique(),
+            patch_artist=True,
+            boxprops=dict(facecolor='lightblue', color='black'),
+            medianprops=dict(color='red')
+        )
         ax.set_xlabel('Day of Month')
         ax.set_ylabel('Rainfall (mm)')
         st.pyplot(fig)
 
 if __name__ == "__main__":
     main()
+
