@@ -15,43 +15,46 @@ month_names = {
 # Streamlit 앱
 def main():
     st.title("강수량 데이터 분석")
-    
+
     # 데이터 불러오기
     try:
         data = pd.read_csv(file_path, encoding='euc-kr')
-        
+
         # 날짜와 강수량 데이터 처리
         if '날짜' in data.columns and '강수량' in data.columns:
             data['날짜'] = pd.to_datetime(data['날짜'])
             data['월'] = data['날짜'].dt.month
             data['일'] = data['날짜'].dt.day
-            
+
             # 월 선택
             st.subheader("월별 강수량 분포")
-            selected_month = st.selectbox("월을 선택하세요:", list(month_names.values()))
-            
+            selected_month_name = st.selectbox(
+                "월을 선택하세요:",
+                list(month_names.values())  # 월 이름 리스트
+            )
+
             # 선택한 월 데이터를 필터링
-            month_num = {v: k for k, v in month_names.items()}[selected_month]  # 영문 이름을 숫자로 변환
+            month_num = {v: k for k, v in month_names.items()}[selected_month_name]  # 영문 이름을 숫자로 변환
             filtered_data = data[data['월'] == month_num]
-            
+
             if not filtered_data.empty:
-                st.write(f"선택한 월: {selected_month}")
-                
+                st.write(f"선택한 월: {selected_month_name}")
+
                 # 박스플롯 생성
                 fig, ax = plt.subplots(figsize=(12, 6))
-                
-                # 날짜별 강수량 데이터를 재구조화
+
+                # 날짜별 강수량 데이터 재구조화
                 boxplot_data = [
                     filtered_data[filtered_data['일'] == day]['강수량'].values
                     for day in range(1, 32)  # 1일부터 31일까지
                 ]
                 ax.boxplot(boxplot_data, positions=range(1, 32), widths=0.6)
-                ax.set_title(f"{selected_month}의 날짜별 강수량 분포")
+                ax.set_title(f"{selected_month_name}의 날짜별 강수량 분포")
                 ax.set_xlabel("날짜")
                 ax.set_ylabel("강수량")
                 ax.set_xticks(range(1, 32))
                 ax.set_xticklabels(range(1, 32))  # x축에 1~31일까지 표시
-                
+                ax.tick_params(axis='x', rotation=45)  # x축 날짜 회전
                 st.pyplot(fig)
             else:
                 st.warning("선택한 월에 데이터가 없습니다.")
