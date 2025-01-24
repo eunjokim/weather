@@ -18,18 +18,26 @@ def main():
     # Load data
     data = load_data()
 
-    # Filter by month and show daily rainfall as pie chart
+    # Month names in English
+    month_names = {
+        1: 'January', 2: 'February', 3: 'March', 4: 'April',
+        5: 'May', 6: 'June', 7: 'July', 8: 'August',
+        9: 'September', 10: 'October', 11: 'November', 12: 'December'
+    }
+
+    # Filter by month and show daily rainfall as bar chart
     st.subheader("Monthly Rainfall Distribution")
-    month = st.selectbox("Select a month", sorted(data['월'].unique()))
+    month = st.selectbox("Select a month", sorted(data['월'].unique()), format_func=lambda x: month_names[x])
     monthly_data = data[data['월'] == month]
 
     if monthly_data.empty:
-        st.warning(f"No data available for month {month}.")
+        st.warning(f"No data available for {month_names[month]}.")
     else:
-        daily_rainfall = monthly_data.groupby('일')['강수량'].sum()
         fig, ax = plt.subplots()
-        ax.pie(daily_rainfall, labels=daily_rainfall.index, autopct='%1.1f%%', startangle=90, colors=plt.cm.tab20.colors)
-        ax.set_title(f'Daily Rainfall Distribution for Month {month}')
+        ax.bar(monthly_data['일'], monthly_data['강수량'], color='skyblue', edgecolor='black')
+        ax.set_xlabel('Day of Month')
+        ax.set_ylabel('Rainfall (mm)')
+        ax.set_title(f'Daily Rainfall in {month_names[month]}')
         st.pyplot(fig)
 
 if __name__ == "__main__":
