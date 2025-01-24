@@ -5,11 +5,13 @@ import matplotlib.pyplot as plt
 # 데이터 로드 및 전처리
 @st.cache
 def load_data():
-    # CSV 파일 불러오기
-    data = pd.read_csv('강수량.csv')
+    # CSV 파일 불러오기 (BOM 제거)
+    data = pd.read_csv('강수량.csv', encoding='utf-8-sig')
     # 강수량 열의 빈칸을 0으로 채우기
     if '강수량' in data.columns:
         data['강수량'] = data['강수량'].fillna(0)
+    # 열 이름에서 BOM 제거
+    data.columns = data.columns.str.strip()
     return data
 
 data = load_data()
