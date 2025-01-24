@@ -1,9 +1,4 @@
 import streamlit as st
-
-st.title('Weather')
-st.write("Let's start")
-
-import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -15,14 +10,12 @@ def load_data():
     data['월'] = data['날짜'].dt.month  # Extract month from date
     return data
 
-
 # Streamlit app
 def main():
     st.title("Daily Rainfall Analysis")
 
     # Load data
     data = load_data()
-
 
     # Filter by month and show rainfall distribution
     st.subheader("Monthly Rainfall Distribution")
@@ -33,11 +26,13 @@ def main():
         st.warning(f"No data available for month {month}.")
     else:
         fig, ax = plt.subplots()
-        ax.bar(monthly_data['날짜'].dt.day, monthly_data['강수량'], color='orange', edgecolor='black')
-        ax.set_xlabel('Day of Month')
-        ax.set_ylabel('Rainfall (mm)')
+        ax.boxplot(monthly_data['강수량'].dropna(), vert=False, patch_artist=True, 
+                   boxprops=dict(facecolor='lightblue', color='black'), 
+                   medianprops=dict(color='red'))
+        ax.set_xlabel('Rainfall (mm)')
         ax.set_title(f'Rainfall Distribution for Month {month}')
         st.pyplot(fig)
 
 if __name__ == "__main__":
     main()
+
