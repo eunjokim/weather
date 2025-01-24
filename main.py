@@ -34,11 +34,20 @@ def main():
                 
                 # 박스플롯 생성
                 fig, ax = plt.subplots(figsize=(10, 6))
-                filtered_data.boxplot(column='강수량', by='일', ax=ax, vert=True)
+                
+                # 날짜별 강수량 데이터를 재구조화
+                boxplot_data = [
+                    filtered_data[filtered_data['일'] == day]['강수량'].values
+                    for day in range(1, 32)  # 1일부터 31일까지
+                    if day in filtered_data['일'].values
+                ]
+                ax.boxplot(boxplot_data, positions=range(1, len(boxplot_data) + 1))
                 ax.set_title(f"{selected_month}의 날짜별 강수량 분포")
                 ax.set_xlabel("날짜")
                 ax.set_ylabel("강수량")
-                plt.suptitle("")  # 기본 제목 제거
+                ax.set_xticks(range(1, len(boxplot_data) + 1))
+                ax.set_xticklabels([day for day in range(1, 32) if day in filtered_data['일'].values])
+                
                 st.pyplot(fig)
             else:
                 st.warning("선택한 월에 데이터가 없습니다.")
