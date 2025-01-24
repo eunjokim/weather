@@ -22,9 +22,6 @@ def main():
     # Load data
     data = load_data()
 
-    # Display raw data
-    st.subheader("Raw Data")
-    st.dataframe(data)
 
     fig, ax = plt.subplots()
     ax.bar(monthly_data['날짜'].dt.day, monthly_data['강수량'], color='orange', edgecolor='black')
