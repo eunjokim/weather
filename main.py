@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 import matplotlib.pyplot as plt
 
 # 데이터 파일 경로
@@ -46,14 +47,16 @@ def main():
                 boxplot_data = [
                     filtered_data[filtered_data['일'] == day]['강수량'].values
                     for day in range(1, 32)  # 1일부터 31일까지
+                    if day in filtered_data['일'].values
                 ]
+                
                 # 박스플롯 그리기
-                ax.boxplot(boxplot_data, positions=range(1, 32), widths=0.6)
+                ax.boxplot(boxplot_data, positions=range(1, len(boxplot_data) + 1), widths=0.6)
                 ax.set_title(f"{selected_month_name}의 날짜별 강수량 분포")
                 ax.set_xlabel("날짜")
                 ax.set_ylabel("강수량")
-                ax.set_xticks(range(1, 32))  # 1부터 31까지 x축 설정
-                ax.set_xticklabels(range(1, 32))  # x축 레이블 추가
+                ax.set_xticks(range(1, len(boxplot_data) + 1))
+                ax.set_xticklabels(range(1, len(boxplot_data) + 1))  # x축에 날짜 표시
                 ax.tick_params(axis='x', rotation=45)  # x축 레이블 45도 회전
                 
                 st.pyplot(fig)
