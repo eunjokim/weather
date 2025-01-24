@@ -26,34 +26,6 @@ def main():
     st.subheader("Raw Data")
     st.dataframe(data)
 
-    # Basic statistics
-    st.subheader("Basic Statistics")
-    st.write(data.describe())
-
-    # Line chart for rainfall over time
-    st.subheader("Rainfall Over Time")
-    fig, ax = plt.subplots()
-    ax.plot(data['날짜'], data['강수량'], label='Daily Rainfall', color='blue')
-    ax.set_xlabel('Date')
-    ax.set_ylabel('Rainfall (mm)')
-    ax.set_title('Daily Rainfall Trend')
-    ax.legend()
-    st.pyplot(fig)
-
-    # Histogram for rainfall distribution
-    st.subheader("Rainfall Distribution")
-    fig, ax = plt.subplots()
-    ax.hist(data['강수량'].dropna(), bins=20, color='skyblue', edgecolor='black')
-    ax.set_xlabel('Rainfall (mm)')
-    ax.set_ylabel('Frequency')
-    ax.set_title('Rainfall Distribution')
-    st.pyplot(fig)
-
-    # Filter by month and show rainfall distribution
-    st.subheader("Monthly Rainfall Distribution")
-    month = st.selectbox("Select a month", sorted(data['월'].unique()))
-    monthly_data = data[data['월'] == month]
-
     fig, ax = plt.subplots()
     ax.bar(monthly_data['날짜'].dt.day, monthly_data['강수량'], color='orange', edgecolor='black')
     ax.set_xlabel('Day of Month')
