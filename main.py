@@ -1,10 +1,16 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import calendar
 
 # 데이터 파일 경로
 file_path = '강수량.csv'
+
+# Month names in English
+month_names = {
+    1: 'January', 2: 'February', 3: 'March', 4: 'April',
+    5: 'May', 6: 'June', 7: 'July', 8: 'August',
+    9: 'September', 10: 'October', 11: 'November', 12: 'December'
+}
 
 # Streamlit 앱
 def main():
@@ -22,31 +28,29 @@ def main():
             
             # 월 선택
             st.subheader("월별 강수량 분포")
-            month_names = list(calendar.month_name[1:])  # 1월부터 12월까지의 영문 이름 리스트
-            selected_month = st.selectbox("월을 선택하세요:", month_names)
+            selected_month = st.selectbox("월을 선택하세요:", list(month_names.values()))
             
             # 선택한 월 데이터를 필터링
-            month_num = month_names.index(selected_month) + 1  # 월 이름을 숫자로 변환
+            month_num = {v: k for k, v in month_names.items()}[selected_month]  # 영문 이름을 숫자로 변환
             filtered_data = data[data['월'] == month_num]
             
             if not filtered_data.empty:
                 st.write(f"선택한 월: {selected_month}")
                 
                 # 박스플롯 생성
-                fig, ax = plt.subplots(figsize=(10, 6))
+                fig, ax = plt.subplots(figsize=(12, 6))
                 
                 # 날짜별 강수량 데이터를 재구조화
                 boxplot_data = [
                     filtered_data[filtered_data['일'] == day]['강수량'].values
                     for day in range(1, 32)  # 1일부터 31일까지
-                    if day in filtered_data['일'].values
                 ]
-                ax.boxplot(boxplot_data, positions=range(1, len(boxplot_data) + 1))
+                ax.boxplot(boxplot_data, positions=range(1, 32), widths=0.6)
                 ax.set_title(f"{selected_month}의 날짜별 강수량 분포")
                 ax.set_xlabel("날짜")
                 ax.set_ylabel("강수량")
-                ax.set_xticks(range(1, len(boxplot_data) + 1))
-                ax.set_xticklabels([day for day in range(1, 32) if day in filtered_data['일'].values])
+                ax.set_xticks(range(1, 32))
+                ax.set_xticklabels(range(1, 32))  # x축에 1~31일까지 표시
                 
                 st.pyplot(fig)
             else:
