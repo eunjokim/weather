@@ -70,7 +70,7 @@ if input_date:
 
         # Display results
         st.subheader(f"Rainfall Analysis for {input_date}")
-        st.write(f"**Probability of Rain:** {probability:.2f}%")
+        st.write(f"**Percentage of Rain:** {probability:.2f}%")
         st.write(f"**Average Rainfall:** {average_rainfall:.2f} mm")
 
         # Create a bar chart for rainfall amounts by year
