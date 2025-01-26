@@ -15,6 +15,12 @@ def load_data(path):
 
 data = load_data(file_path)
 
+# Rename columns for consistency
+if '날짜' in data.columns:
+    data.rename(columns={'날짜': 'date'}, inplace=True)
+if '강수량' in data.columns:
+    data.rename(columns={'강수량': 'rainfall'}, inplace=True)
+
 # Ensure the date column exists and is properly formatted if necessary
 if 'date' in data.columns:
     # Split the 'date' column into year, month, and day assuming the format is YYYY-MM-DD or similar
