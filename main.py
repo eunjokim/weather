@@ -32,6 +32,12 @@ else:
     st.error("The dataset must have a 'rainfall' column.")
     st.stop()
 
+# Filter data within the specified date range
+start_date = '1973-12-01'
+end_date = '2025-01-21'
+data['date'] = pd.to_datetime(data['date'], errors='coerce')
+data = data[(data['date'] >= start_date) & (data['date'] <= end_date)]
+
 # Sidebar for month selection
 st.sidebar.title("Monthly Rainfall Analysis")
 month_selected = st.sidebar.selectbox("Select a month:", range(1, 13), format_func=lambda x: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][x-1])
