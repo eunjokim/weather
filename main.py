@@ -13,6 +13,9 @@ data = load_data(file_path)
 # Ensure the date column exists and is properly formatted if necessary
 if 'date' in data.columns:
     data['date'] = pd.to_datetime(data['date'], errors='coerce')
+    if data['date'].isna().all():
+        st.error("The 'date' column could not be parsed. Please check the date format in the dataset.")
+        st.stop()
 else:
     st.error("The dataset must have a 'date' column.")
     st.stop()
@@ -25,8 +28,9 @@ else:
     st.stop()
 
 # Extract month and day
-data['month'] = data['date'].dt.month
-data['day'] = data['date'].dt.day
+if not data['date'].isna().all():
+    data['month'] = data['date'].dt.month
+    data['day'] = data['date'].dt.day
 
 # Sidebar for month selection
 st.sidebar.title("Monthly Rainfall Analysis")
