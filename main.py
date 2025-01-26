@@ -4,7 +4,11 @@ import matplotlib.pyplot as plt
 
 # Load data
 file_path = '강수량.csv'
-data = pd.read_csv(file_path, encoding='euc-kr')
+@st.cache_data
+def load_data(path):
+    return pd.read_csv(path, encoding='euc-kr')
+
+data = load_data(file_path)
 
 # Ensure the date column exists and is properly formatted if necessary
 if 'date' in data.columns:
