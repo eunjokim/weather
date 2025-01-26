@@ -51,7 +51,7 @@ data = data[(data['date'] >= start_date) & (data['date'] <= end_date)]
 data['month_day'] = data['date'].dt.strftime('%m-%d')
 
 # Main page for date selection
-st.title("Rainfall Analysis by Specific Date")
+st.title("Rainfall Percentage by Specific Date")
 input_date = st.text_input("Enter a date (MM-DD):", value="02-20")
 
 if input_date:
@@ -69,18 +69,24 @@ if input_date:
 
         # Display results
         st.subheader(f"Rainfall Analysis for {input_date}")
-        st.write(f"**Probability of Rain:** {probability:.2f}%")
+        st.write(f"**Percentage of Rain:** {probability:.2f}%")
         st.write(f"**Average Rainfall:** {average_rainfall:.2f} mm")
 
         # Create a bar chart for rainfall amounts by year
         st.subheader("Rainfall by Year")
         rainfall_by_year = rain_days.groupby('year')['rainfall'].mean().reset_index()
 
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.bar(rainfall_by_year['year'], rainfall_by_year['rainfall'], color='skyblue')
-        ax.set_title(f"Rainfall on {input_date} by Year")
-        ax.set_xlabel("Year")
-        ax.set_ylabel("Rainfall (mm)")
-        plt.xticks(rotation=45)
+        if rainfall_by_year.empty:
+            st.warning("No rainfall data available to display the bar chart.")
+        else:
+            st.write("Rainfall data by year:")
+            st.write(rainfall_by_year)
 
-        st.pyplot(fig)
+            fig, ax = plt.subplots(figsize=(10, 6))
+            ax.bar(rainfall_by_year['year'], rainfall_by_year['rainfall'], color='skyblue')
+            ax.set_title(f"Rainfall on {input_date} by Year")
+            ax.set_xlabel("Year")
+            ax.set_ylabel("Rainfall (mm)")
+            plt.xticks(rotation=45)
+
+            st.pyplot(fig)
