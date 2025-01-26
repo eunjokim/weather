@@ -52,6 +52,7 @@ data['month_day'] = data['date'].dt.strftime('%m-%d')
 
 # Main page for date selection
 st.title("Rainfall Analysis by Specific Date")
+st.write("### Based on records from 1973-12-01 to 2025-01-21")
 input_date = st.text_input("Enter a date (MM-DD):", value="02-20")
 
 if input_date:
