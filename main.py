@@ -58,7 +58,7 @@ if filtered_data.empty:
     st.warning(f"No data available for {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][month_selected-1]}.")
 else:
     # Create a boxplot for daily rainfall distribution
-    fig, ax = plt.subplots(figsize=(20, 10), dpi=300)  # Increase the width of the plot and set dpi
+    fig, ax = plt.subplots(figsize=(18, 9), dpi=200)  # Increase the width of the plot and set dpi
     filtered_data.boxplot(column='rainfall', by='day', ax=ax, grid=False)
 
     ax.set_title(f"Rainfall Distribution in {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][month_selected-1]}")
