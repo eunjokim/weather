@@ -12,13 +12,15 @@ data = load_data(file_path)
 
 # Ensure the date column exists and is properly formatted if necessary
 if 'date' in data.columns:
-    data['date'] = pd.to_datetime(data['date'], errors='coerce')
-    if data['date'].isna().all():
-        st.error("The 'date' column could not be parsed. Please check the date format in the dataset.")
+    # Split the 'date' column into year, month, and day assuming the format is YYYY-MM-DD or similar
+    try:
+        data['year'], data['month'], data['day'] = zip(*data['date'].str.split('-').apply(lambda x: (int(x[0]), int(x[1]), int(x[2]))))
+        st.write("Sample of extracted 'year', 'month', and 'day' columns:")
+        st.write(data[['date', 'year', 'month', 'day']].head())
+    except Exception as e:
+        st.error("Failed to process the 'date' column. Please ensure it follows the expected format (e.g., YYYY-MM-DD).")
+        st.write(f"Error details: {e}")
         st.stop()
-    else:
-        st.write("Sample of parsed 'date' column:")
-        st.write(data['date'].head())
 else:
     st.error("The dataset must have a 'date' column.")
     st.stop()
@@ -29,13 +31,6 @@ if 'rainfall' in data.columns:
 else:
     st.error("The dataset must have a 'rainfall' column.")
     st.stop()
-
-# Extract month and day
-if not data['date'].isna().all():
-    data['month'] = data['date'].dt.month
-    data['day'] = data['date'].dt.day
-    st.write("Sample of extracted 'month' and 'day' columns:")
-    st.write(data[['date', 'month', 'day']].head())
 
 # Sidebar for month selection
 st.sidebar.title("Monthly Rainfall Analysis")
