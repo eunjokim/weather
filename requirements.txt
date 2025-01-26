@@ -1,3 +1,7 @@
 matplotlib
 koreanize_matplotlib
 plotly
+streamlit
+pandas
+scikit-learn
+matplotlib
