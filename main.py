@@ -16,6 +16,9 @@ if 'date' in data.columns:
     if data['date'].isna().all():
         st.error("The 'date' column could not be parsed. Please check the date format in the dataset.")
         st.stop()
+    else:
+        st.write("Sample of parsed 'date' column:")
+        st.write(data['date'].head())
 else:
     st.error("The dataset must have a 'date' column.")
     st.stop()
@@ -31,6 +34,8 @@ else:
 if not data['date'].isna().all():
     data['month'] = data['date'].dt.month
     data['day'] = data['date'].dt.day
+    st.write("Sample of extracted 'month' and 'day' columns:")
+    st.write(data[['date', 'month', 'day']].head())
 
 # Sidebar for month selection
 st.sidebar.title("Monthly Rainfall Analysis")
