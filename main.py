@@ -6,7 +6,12 @@ import matplotlib.pyplot as plt
 file_path = '강수량.csv'
 @st.cache_data
 def load_data(path):
-    return pd.read_csv(path, encoding='euc-kr')
+    try:
+        # Attempt to read with utf-8 encoding
+        return pd.read_csv(path, encoding='utf-8')
+    except UnicodeDecodeError:
+        # Fallback to euc-kr encoding
+        return pd.read_csv(path, encoding='euc-kr')
 
 data = load_data(file_path)
 
@@ -60,4 +65,3 @@ else:
     plt.suptitle("")  # Remove the default title from pandas boxplot
 
     st.pyplot(fig)
-
