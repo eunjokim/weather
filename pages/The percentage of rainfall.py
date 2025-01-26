@@ -15,14 +15,6 @@ def load_data(path):
 
 data = load_data(file_path)
 
-# Debugging: Display a sample of the loaded data
-if data is not None:
-    st.write("Sample of loaded data:")
-    st.write(data.head())
-else:
-    st.error("Failed to load data. Please check the file path and format.")
-    st.stop()
-
 # Rename columns for consistency
 if '날짜' in data.columns:
     data.rename(columns={'날짜': 'date'}, inplace=True)
@@ -58,16 +50,9 @@ data = data[(data['date'] >= start_date) & (data['date'] <= end_date)]
 # Create a 'month-day' column for easier filtering
 data['month_day'] = data['date'].dt.strftime('%m-%d')
 
-# Debugging: Display filtered data by date range
-st.write("Filtered data sample:")
-st.write(data.head())
-
 # Main page for date selection
 st.title("Rainfall Analysis by Specific Date")
 input_date = st.text_input("Enter a date (MM-DD):", value="02-20")
-
-# Debugging: Display input date
-st.write(f"Input date: {input_date}")
 
 if input_date:
     # Filter data for the specified date
@@ -94,15 +79,12 @@ if input_date:
         if rainfall_by_year.empty:
             st.warning("No rainfall data available to display the bar chart.")
         else:
-            st.write("Rainfall data by year:")
-            st.write(rainfall_by_year)
-
             fig, ax = plt.subplots(figsize=(10, 6))
             ax.bar(rainfall_by_year['year'], rainfall_by_year['rainfall'], color='skyblue')
             ax.set_title(f"Rainfall on {input_date} by Year")
             ax.set_xlabel("Year")
             ax.set_ylabel("Rainfall (mm)")
+            ax.set_xticks(rainfall_by_year['year'])  # Display only years with data
             plt.xticks(rotation=45)
 
             st.pyplot(fig)
-
