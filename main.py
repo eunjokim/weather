@@ -49,6 +49,7 @@ data = data[(data['date'] >= start_date) & (data['date'] <= end_date)]
 
 # Main page for month selection
 st.title("Monthly Rainfall Analysis")
+st.write("### Based on records from 1973-12-01 to 2025-01-21")
 month_selected = st.selectbox("Select a month:", range(1, 13), format_func=lambda x: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][x-1])
 
 # Filter data for the selected month
