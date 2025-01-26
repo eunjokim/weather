@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+import matplotlib.pyplot as plt
 
 # Load data
 file_path = '강수량.csv'
@@ -70,3 +71,16 @@ if input_date:
         st.subheader(f"Rainfall Analysis for {input_date}")
         st.write(f"**Probability of Rain:** {probability:.2f}%")
         st.write(f"**Average Rainfall:** {average_rainfall:.2f} mm")
+
+        # Create a bar chart for rainfall amounts by year
+        st.subheader("Rainfall by Year")
+        rainfall_by_year = rain_days.groupby('year')['rainfall'].mean().reset_index()
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.bar(rainfall_by_year['year'], rainfall_by_year['rainfall'], color='skyblue')
+        ax.set_title(f"Rainfall on {input_date} by Year")
+        ax.set_xlabel("Year")
+        ax.set_ylabel("Rainfall (mm)")
+        plt.xticks(rotation=45)
+
+        st.pyplot(fig)
